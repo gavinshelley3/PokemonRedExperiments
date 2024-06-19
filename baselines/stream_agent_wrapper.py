@@ -7,6 +7,7 @@ import gymnasium as gym
 X_POS_ADDRESS, Y_POS_ADDRESS = 0xD362, 0xD361
 MAP_N_ADDRESS = 0xD35E
 
+
 class StreamWrapper(gym.Wrapper):
     def __init__(self, env, stream_metadata={}):
         super().__init__(env)
@@ -15,9 +16,7 @@ class StreamWrapper(gym.Wrapper):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
         self.websocket = None
-        self.loop.run_until_complete(
-            self.establish_wc_connection()
-        )
+        self.loop.run_until_complete(self.establish_wc_connection())
         self.upload_interval = 250
         self.steam_step_counter = 0
         self.coord_list = []
@@ -39,10 +38,7 @@ class StreamWrapper(gym.Wrapper):
             self.loop.run_until_complete(
                 self.broadcast_ws_message(
                     json.dumps(
-                        {
-                          "metadata": self.stream_metadata,
-                          "coords": self.coord_list
-                        }
+                        {"metadata": self.stream_metadata, "coords": self.coord_list}
                     )
                 )
             )
