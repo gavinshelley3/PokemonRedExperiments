@@ -1,0 +1,268 @@
+---------------------------------
+| env_stats/         |          |
+|    badge           | 1        |
+|    deaths          | 2.67     |
+|    event           | 42.7     |
+|    frames          | 815      |
+|    healr           | 8.06     |
+|    hp              | 0.772    |
+|    levels_sum      | 34.8     |
+|    map             | 63       |
+|    pcount          | 3.33     |
+|    step            | 1.02e+04 |
+|    x               | 18.5     |
+|    y               | 18.7     |
+| time/              |          |
+|    fps             | 77       |
+|    iterations      | 1        |
+|    time_elapsed    | 1269     |
+|    total_timesteps | 98304    |
+---------------------------------
+------------------------------------------
+| env_stats/              |              |
+|    badge                | 0.833        |
+|    deaths               | 3.67         |
+|    event                | 30           |
+|    frames               | 746          |
+|    healr                | 5.69         |
+|    hp                   | 0.798        |
+|    levels_sum           | 39.8         |
+|    map                  | 54.7         |
+|    pcount               | 4.33         |
+|    step                 | 1.02e+04     |
+|    x                    | 13.5         |
+|    y                    | 21.8         |
+| time/                   |              |
+|    fps                  | 73           |
+|    iterations           | 2            |
+|    time_elapsed         | 2660         |
+|    total_timesteps      | 196608       |
+| train/                  |              |
+|    approx_kl            | 0.0068151616 |
+|    clip_fraction        | 0.0261       |
+|    clip_range           | 0.3          |
+|    entropy_loss         | -0.151       |
+|    explained_variance   | 0.554        |
+|    learning_rate        | 0.0005       |
+|    loss                 | 0.00064      |
+|    n_updates            | 662          |
+|    policy_gradient_loss | 0.00119      |
+|    value_loss           | 0.00709      |
+------------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 4.83        |
+|    event                | 28          |
+|    frames               | 904         |
+|    healr                | 5.32        |
+|    hp                   | 0.874       |
+|    levels_sum           | 41.2        |
+|    map                  | 37.7        |
+|    pcount               | 4.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 20.8        |
+|    y                    | 9           |
+| time/                   |             |
+|    fps                  | 73          |
+|    iterations           | 3           |
+|    time_elapsed         | 4006        |
+|    total_timesteps      | 294912      |
+| train/                  |             |
+|    approx_kl            | 0.010245637 |
+|    clip_fraction        | 0.0334      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.155      |
+|    explained_variance   | 0.777       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0115      |
+|    n_updates            | 663         |
+|    policy_gradient_loss | 0.00142     |
+|    value_loss           | 0.00726     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.83        |
+|    event                | 24.7        |
+|    frames               | 1.24e+03    |
+|    healr                | 7.82        |
+|    hp                   | 0.775       |
+|    levels_sum           | 32.2        |
+|    map                  | 53.2        |
+|    pcount               | 3.67        |
+|    step                 | 1.02e+04    |
+|    x                    | 9.33        |
+|    y                    | 9.17        |
+| time/                   |             |
+|    fps                  | 72          |
+|    iterations           | 4           |
+|    time_elapsed         | 5445        |
+|    total_timesteps      | 393216      |
+| train/                  |             |
+|    approx_kl            | 0.010162092 |
+|    clip_fraction        | 0.0346      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.177      |
+|    explained_variance   | 0.773       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00661     |
+|    n_updates            | 664         |
+|    policy_gradient_loss | 0.00232     |
+|    value_loss           | 0.00859     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 3.17        |
+|    event                | 34.7        |
+|    frames               | 954         |
+|    healr                | 7.36        |
+|    hp                   | 0.652       |
+|    levels_sum           | 37.7        |
+|    map                  | 52.3        |
+|    pcount               | 3.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 16          |
+|    y                    | 23.8        |
+| time/                   |             |
+|    fps                  | 71          |
+|    iterations           | 5           |
+|    time_elapsed         | 6844        |
+|    total_timesteps      | 491520      |
+| train/                  |             |
+|    approx_kl            | 0.013153754 |
+|    clip_fraction        | 0.0425      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.201      |
+|    explained_variance   | 0.819       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00106     |
+|    n_updates            | 665         |
+|    policy_gradient_loss | 0.00152     |
+|    value_loss           | 0.00849     |
+-----------------------------------------
+------------------------------------------
+| env_stats/              |              |
+|    badge                | 1            |
+|    deaths               | 2.33         |
+|    event                | 36.7         |
+|    frames               | 1.09e+03     |
+|    healr                | 8.25         |
+|    hp                   | 0.71         |
+|    levels_sum           | 34.7         |
+|    map                  | 55           |
+|    pcount               | 3.83         |
+|    step                 | 1.02e+04     |
+|    x                    | 16.5         |
+|    y                    | 12.2         |
+| time/                   |              |
+|    fps                  | 71           |
+|    iterations           | 6            |
+|    time_elapsed         | 8211         |
+|    total_timesteps      | 589824       |
+| train/                  |              |
+|    approx_kl            | 0.0074866847 |
+|    clip_fraction        | 0.0282       |
+|    clip_range           | 0.3          |
+|    entropy_loss         | -0.18        |
+|    explained_variance   | 0.832        |
+|    learning_rate        | 0.0005       |
+|    loss                 | 0.0117       |
+|    n_updates            | 666          |
+|    policy_gradient_loss | 0.00168      |
+|    value_loss           | 0.00965      |
+------------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.33        |
+|    event                | 26          |
+|    frames               | 913         |
+|    healr                | 6.66        |
+|    hp                   | 0.595       |
+|    levels_sum           | 32          |
+|    map                  | 55.8        |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 19.5        |
+|    y                    | 17.2        |
+| time/                   |             |
+|    fps                  | 71          |
+|    iterations           | 7           |
+|    time_elapsed         | 9647        |
+|    total_timesteps      | 688128      |
+| train/                  |             |
+|    approx_kl            | 0.011358395 |
+|    clip_fraction        | 0.0386      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.158      |
+|    explained_variance   | 0.838       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00331     |
+|    n_updates            | 667         |
+|    policy_gradient_loss | 0.0024      |
+|    value_loss           | 0.00979     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.5         |
+|    event                | 22.7        |
+|    frames               | 1.32e+03    |
+|    healr                | 6.19        |
+|    hp                   | 0.904       |
+|    levels_sum           | 38.3        |
+|    map                  | 27          |
+|    pcount               | 4.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 24.2        |
+|    y                    | 15.5        |
+| time/                   |             |
+|    fps                  | 71          |
+|    iterations           | 8           |
+|    time_elapsed         | 11042       |
+|    total_timesteps      | 786432      |
+| train/                  |             |
+|    approx_kl            | 0.009178074 |
+|    clip_fraction        | 0.0309      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.16       |
+|    explained_variance   | 0.851       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00325     |
+|    n_updates            | 668         |
+|    policy_gradient_loss | 0.00218     |
+|    value_loss           | 0.0102      |
+-----------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 136, in <module>
+    main()
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 131, in main
+    model.learn(total_timesteps=5_000_000, callback=callback)  # Train the model
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\ppo\ppo.py", line 308, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\on_policy_algorithm.py", line 259, in learn
+    continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\on_policy_algorithm.py", line 169, in collect_rollouts
+    actions, values, log_probs = self.policy(obs_tensor)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 617, in forward
+    features = self.extract_features(obs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 640, in extract_features
+    return super().extract_features(obs, self.features_extractor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 130, in extract_features
+    preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\preprocessing.py", line 110, in preprocess_obs
+    return obs.float() / 255.0
+           ^^^^^^^^^^^
+KeyboardInterrupt

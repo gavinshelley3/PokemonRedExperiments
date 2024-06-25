@@ -1,0 +1,860 @@
+---------------------------------
+| env_stats/         |          |
+|    badge           | 1        |
+|    deaths          | 2.67     |
+|    event           | 42.7     |
+|    frames          | 815      |
+|    healr           | 8.06     |
+|    hp              | 0.772    |
+|    levels_sum      | 34.8     |
+|    map             | 63       |
+|    pcount          | 3.33     |
+|    step            | 1.02e+04 |
+|    x               | 18.5     |
+|    y               | 18.7     |
+| time/              |          |
+|    fps             | 66       |
+|    iterations      | 1        |
+|    time_elapsed    | 1479     |
+|    total_timesteps | 98304    |
+---------------------------------
+------------------------------------------
+| env_stats/              |              |
+|    badge                | 0.833        |
+|    deaths               | 3.67         |
+|    event                | 30           |
+|    frames               | 746          |
+|    healr                | 5.69         |
+|    hp                   | 0.798        |
+|    levels_sum           | 39.8         |
+|    map                  | 54.7         |
+|    pcount               | 4.33         |
+|    step                 | 1.02e+04     |
+|    x                    | 13.5         |
+|    y                    | 21.8         |
+| time/                   |              |
+|    fps                  | 63           |
+|    iterations           | 2            |
+|    time_elapsed         | 3117         |
+|    total_timesteps      | 196608       |
+| train/                  |              |
+|    approx_kl            | 0.0068151616 |
+|    clip_fraction        | 0.0261       |
+|    clip_range           | 0.3          |
+|    entropy_loss         | -0.151       |
+|    explained_variance   | 0.554        |
+|    learning_rate        | 0.0005       |
+|    loss                 | 0.00064      |
+|    n_updates            | 662          |
+|    policy_gradient_loss | 0.00119      |
+|    value_loss           | 0.00709      |
+------------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 4.83        |
+|    event                | 28          |
+|    frames               | 904         |
+|    healr                | 5.32        |
+|    hp                   | 0.874       |
+|    levels_sum           | 41.2        |
+|    map                  | 37.7        |
+|    pcount               | 4.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 20.8        |
+|    y                    | 9           |
+| time/                   |             |
+|    fps                  | 62          |
+|    iterations           | 3           |
+|    time_elapsed         | 4723        |
+|    total_timesteps      | 294912      |
+| train/                  |             |
+|    approx_kl            | 0.010245637 |
+|    clip_fraction        | 0.0334      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.155      |
+|    explained_variance   | 0.777       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0115      |
+|    n_updates            | 663         |
+|    policy_gradient_loss | 0.00142     |
+|    value_loss           | 0.00726     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.83        |
+|    event                | 24.7        |
+|    frames               | 1.24e+03    |
+|    healr                | 7.82        |
+|    hp                   | 0.775       |
+|    levels_sum           | 32.2        |
+|    map                  | 53.2        |
+|    pcount               | 3.67        |
+|    step                 | 1.02e+04    |
+|    x                    | 9.33        |
+|    y                    | 9.17        |
+| time/                   |             |
+|    fps                  | 61          |
+|    iterations           | 4           |
+|    time_elapsed         | 6419        |
+|    total_timesteps      | 393216      |
+| train/                  |             |
+|    approx_kl            | 0.010162092 |
+|    clip_fraction        | 0.0346      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.177      |
+|    explained_variance   | 0.773       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00661     |
+|    n_updates            | 664         |
+|    policy_gradient_loss | 0.00232     |
+|    value_loss           | 0.00859     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 3.17        |
+|    event                | 34.7        |
+|    frames               | 954         |
+|    healr                | 7.36        |
+|    hp                   | 0.652       |
+|    levels_sum           | 37.7        |
+|    map                  | 52.3        |
+|    pcount               | 3.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 16          |
+|    y                    | 23.8        |
+| time/                   |             |
+|    fps                  | 61          |
+|    iterations           | 5           |
+|    time_elapsed         | 8057        |
+|    total_timesteps      | 491520      |
+| train/                  |             |
+|    approx_kl            | 0.013153754 |
+|    clip_fraction        | 0.0425      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.201      |
+|    explained_variance   | 0.819       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00106     |
+|    n_updates            | 665         |
+|    policy_gradient_loss | 0.00152     |
+|    value_loss           | 0.00849     |
+-----------------------------------------
+------------------------------------------
+| env_stats/              |              |
+|    badge                | 1            |
+|    deaths               | 2.33         |
+|    event                | 36.7         |
+|    frames               | 1.09e+03     |
+|    healr                | 8.25         |
+|    hp                   | 0.71         |
+|    levels_sum           | 34.7         |
+|    map                  | 55           |
+|    pcount               | 3.83         |
+|    step                 | 1.02e+04     |
+|    x                    | 16.5         |
+|    y                    | 12.2         |
+| time/                   |              |
+|    fps                  | 60           |
+|    iterations           | 6            |
+|    time_elapsed         | 9684         |
+|    total_timesteps      | 589824       |
+| train/                  |              |
+|    approx_kl            | 0.0074866847 |
+|    clip_fraction        | 0.0282       |
+|    clip_range           | 0.3          |
+|    entropy_loss         | -0.18        |
+|    explained_variance   | 0.832        |
+|    learning_rate        | 0.0005       |
+|    loss                 | 0.0117       |
+|    n_updates            | 666          |
+|    policy_gradient_loss | 0.00168      |
+|    value_loss           | 0.00965      |
+------------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.33        |
+|    event                | 26          |
+|    frames               | 913         |
+|    healr                | 6.66        |
+|    hp                   | 0.595       |
+|    levels_sum           | 32          |
+|    map                  | 55.8        |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 19.5        |
+|    y                    | 17.2        |
+| time/                   |             |
+|    fps                  | 60          |
+|    iterations           | 7           |
+|    time_elapsed         | 11362       |
+|    total_timesteps      | 688128      |
+| train/                  |             |
+|    approx_kl            | 0.011358395 |
+|    clip_fraction        | 0.0386      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.158      |
+|    explained_variance   | 0.838       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00331     |
+|    n_updates            | 667         |
+|    policy_gradient_loss | 0.0024      |
+|    value_loss           | 0.00979     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.5         |
+|    event                | 22.7        |
+|    frames               | 1.32e+03    |
+|    healr                | 6.19        |
+|    hp                   | 0.904       |
+|    levels_sum           | 38.3        |
+|    map                  | 27          |
+|    pcount               | 4.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 24.2        |
+|    y                    | 15.5        |
+| time/                   |             |
+|    fps                  | 60          |
+|    iterations           | 8           |
+|    time_elapsed         | 13054       |
+|    total_timesteps      | 786432      |
+| train/                  |             |
+|    approx_kl            | 0.009178074 |
+|    clip_fraction        | 0.0309      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.16       |
+|    explained_variance   | 0.851       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00325     |
+|    n_updates            | 668         |
+|    policy_gradient_loss | 0.00218     |
+|    value_loss           | 0.0102      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 2           |
+|    event                | 25.3        |
+|    frames               | 790         |
+|    healr                | 6.72        |
+|    hp                   | 0.838       |
+|    levels_sum           | 33          |
+|    map                  | 40.2        |
+|    pcount               | 4           |
+|    step                 | 1.02e+04    |
+|    x                    | 25.5        |
+|    y                    | 18          |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 9           |
+|    time_elapsed         | 14768       |
+|    total_timesteps      | 884736      |
+| train/                  |             |
+|    approx_kl            | 0.009711071 |
+|    clip_fraction        | 0.0355      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.16       |
+|    explained_variance   | 0.831       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00405     |
+|    n_updates            | 669         |
+|    policy_gradient_loss | 0.00221     |
+|    value_loss           | 0.0109      |
+-----------------------------------------
+----------------------------------------
+| env_stats/              |            |
+|    badge                | 1          |
+|    deaths               | 2.5        |
+|    event                | 29.3       |
+|    frames               | 606        |
+|    healr                | 7.39       |
+|    hp                   | 0.849      |
+|    levels_sum           | 35         |
+|    map                  | 30.8       |
+|    pcount               | 4.17       |
+|    step                 | 1.02e+04   |
+|    x                    | 25.5       |
+|    y                    | 9.17       |
+| time/                   |            |
+|    fps                  | 59         |
+|    iterations           | 10         |
+|    time_elapsed         | 16394      |
+|    total_timesteps      | 983040     |
+| train/                  |            |
+|    approx_kl            | 0.11118821 |
+|    clip_fraction        | 0.069      |
+|    clip_range           | 0.3        |
+|    entropy_loss         | -0.305     |
+|    explained_variance   | 0.871      |
+|    learning_rate        | 0.0005     |
+|    loss                 | 0.00167    |
+|    n_updates            | 670        |
+|    policy_gradient_loss | 0.00163    |
+|    value_loss           | 0.00999    |
+----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 3.83        |
+|    event                | 28          |
+|    frames               | 1.25e+03    |
+|    healr                | 8.09        |
+|    hp                   | 0.84        |
+|    levels_sum           | 34.7        |
+|    map                  | 50.8        |
+|    pcount               | 3.67        |
+|    step                 | 1.02e+04    |
+|    x                    | 13.8        |
+|    y                    | 15.8        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 11          |
+|    time_elapsed         | 18048       |
+|    total_timesteps      | 1081344     |
+| train/                  |             |
+|    approx_kl            | 0.014359626 |
+|    clip_fraction        | 0.0461      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.172      |
+|    explained_variance   | 0.824       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0079      |
+|    n_updates            | 671         |
+|    policy_gradient_loss | 0.00231     |
+|    value_loss           | 0.0137      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 4.33        |
+|    event                | 16.7        |
+|    frames               | 1.01e+03    |
+|    healr                | 6.19        |
+|    hp                   | 0.89        |
+|    levels_sum           | 28          |
+|    map                  | 25.3        |
+|    pcount               | 3           |
+|    step                 | 1.02e+04    |
+|    x                    | 12          |
+|    y                    | 7.33        |
+| time/                   |             |
+|    fps                  | 60          |
+|    iterations           | 12          |
+|    time_elapsed         | 19660       |
+|    total_timesteps      | 1179648     |
+| train/                  |             |
+|    approx_kl            | 0.012025226 |
+|    clip_fraction        | 0.0431      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.184      |
+|    explained_variance   | 0.861       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0135      |
+|    n_updates            | 672         |
+|    policy_gradient_loss | 0.00251     |
+|    value_loss           | 0.0102      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 2.5         |
+|    event                | 28          |
+|    frames               | 977         |
+|    healr                | 7.27        |
+|    hp                   | 0.801       |
+|    levels_sum           | 36.3        |
+|    map                  | 23.2        |
+|    pcount               | 3.83        |
+|    step                 | 1.02e+04    |
+|    x                    | 35.8        |
+|    y                    | 8.5         |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 13          |
+|    time_elapsed         | 21311       |
+|    total_timesteps      | 1277952     |
+| train/                  |             |
+|    approx_kl            | 0.014117435 |
+|    clip_fraction        | 0.0509      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.228      |
+|    explained_variance   | 0.896       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00784     |
+|    n_updates            | 673         |
+|    policy_gradient_loss | 0.00323     |
+|    value_loss           | 0.00799     |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 2.83        |
+|    event                | 32.7        |
+|    frames               | 696         |
+|    healr                | 8.85        |
+|    hp                   | 0.815       |
+|    levels_sum           | 35.8        |
+|    map                  | 32.5        |
+|    pcount               | 3.67        |
+|    step                 | 1.02e+04    |
+|    x                    | 13.5        |
+|    y                    | 8.5         |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 14          |
+|    time_elapsed         | 23010       |
+|    total_timesteps      | 1376256     |
+| train/                  |             |
+|    approx_kl            | 0.035156865 |
+|    clip_fraction        | 0.062       |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.201      |
+|    explained_variance   | 0.864       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0103      |
+|    n_updates            | 674         |
+|    policy_gradient_loss | 0.00599     |
+|    value_loss           | 0.0128      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 2.83        |
+|    event                | 36.7        |
+|    frames               | 957         |
+|    healr                | 8.68        |
+|    hp                   | 0.775       |
+|    levels_sum           | 32.3        |
+|    map                  | 53.5        |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 15.3        |
+|    y                    | 18          |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 15          |
+|    time_elapsed         | 24649       |
+|    total_timesteps      | 1474560     |
+| train/                  |             |
+|    approx_kl            | 0.011883567 |
+|    clip_fraction        | 0.0402      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.173      |
+|    explained_variance   | 0.869       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00672     |
+|    n_updates            | 675         |
+|    policy_gradient_loss | 0.00305     |
+|    value_loss           | 0.0116      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 3           |
+|    event                | 30          |
+|    frames               | 1.31e+03    |
+|    healr                | 8.98        |
+|    hp                   | 0.778       |
+|    levels_sum           | 31          |
+|    map                  | 55.2        |
+|    pcount               | 3.17        |
+|    step                 | 1.02e+04    |
+|    x                    | 13.7        |
+|    y                    | 13          |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 16          |
+|    time_elapsed         | 26251       |
+|    total_timesteps      | 1572864     |
+| train/                  |             |
+|    approx_kl            | 0.010576942 |
+|    clip_fraction        | 0.0376      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.171      |
+|    explained_variance   | 0.87        |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0118      |
+|    n_updates            | 676         |
+|    policy_gradient_loss | 0.00175     |
+|    value_loss           | 0.0133      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 3.17        |
+|    event                | 29.3        |
+|    frames               | 740         |
+|    healr                | 6.68        |
+|    hp                   | 0.707       |
+|    levels_sum           | 31.7        |
+|    map                  | 45          |
+|    pcount               | 3.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 16          |
+|    y                    | 19.2        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 17          |
+|    time_elapsed         | 27923       |
+|    total_timesteps      | 1671168     |
+| train/                  |             |
+|    approx_kl            | 0.010022807 |
+|    clip_fraction        | 0.0389      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.182      |
+|    explained_variance   | 0.877       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0095      |
+|    n_updates            | 677         |
+|    policy_gradient_loss | 0.00246     |
+|    value_loss           | 0.0126      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 2.67        |
+|    event                | 28.7        |
+|    frames               | 747         |
+|    healr                | 6.19        |
+|    hp                   | 0.938       |
+|    levels_sum           | 38.2        |
+|    map                  | 44.8        |
+|    pcount               | 4.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 18.7        |
+|    y                    | 8.17        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 18          |
+|    time_elapsed         | 29508       |
+|    total_timesteps      | 1769472     |
+| train/                  |             |
+|    approx_kl            | 0.012870629 |
+|    clip_fraction        | 0.0407      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.2        |
+|    explained_variance   | 0.874       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00582     |
+|    n_updates            | 678         |
+|    policy_gradient_loss | 0.00328     |
+|    value_loss           | 0.0108      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.333       |
+|    deaths               | 2.17        |
+|    event                | 15.3        |
+|    frames               | 1.4e+03     |
+|    healr                | 6.02        |
+|    hp                   | 0.747       |
+|    levels_sum           | 26.8        |
+|    map                  | 41.3        |
+|    pcount               | 3           |
+|    step                 | 1.02e+04    |
+|    x                    | 12.2        |
+|    y                    | 19.2        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 19          |
+|    time_elapsed         | 31152       |
+|    total_timesteps      | 1867776     |
+| train/                  |             |
+|    approx_kl            | 0.014340852 |
+|    clip_fraction        | 0.051       |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.232      |
+|    explained_variance   | 0.871       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.0115      |
+|    n_updates            | 679         |
+|    policy_gradient_loss | 0.00321     |
+|    value_loss           | 0.0124      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.667       |
+|    deaths               | 3.17        |
+|    event                | 20          |
+|    frames               | 1.3e+03     |
+|    healr                | 7.63        |
+|    hp                   | 0.827       |
+|    levels_sum           | 31.5        |
+|    map                  | 52.7        |
+|    pcount               | 3.5         |
+|    step                 | 1.02e+04    |
+|    x                    | 10.8        |
+|    y                    | 14          |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 20          |
+|    time_elapsed         | 32830       |
+|    total_timesteps      | 1966080     |
+| train/                  |             |
+|    approx_kl            | 0.021192536 |
+|    clip_fraction        | 0.0595      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.269      |
+|    explained_variance   | 0.862       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00365     |
+|    n_updates            | 680         |
+|    policy_gradient_loss | 0.00298     |
+|    value_loss           | 0.00933     |
+-----------------------------------------
+----------------------------------------
+| env_stats/              |            |
+|    badge                | 0.833      |
+|    deaths               | 3.33       |
+|    event                | 31.3       |
+|    frames               | 680        |
+|    healr                | 8.18       |
+|    hp                   | 1          |
+|    levels_sum           | 35.8       |
+|    map                  | 12.3       |
+|    pcount               | 3.83       |
+|    step                 | 1.02e+04   |
+|    x                    | 34.2       |
+|    y                    | 11.2       |
+| time/                   |            |
+|    fps                  | 59         |
+|    iterations           | 21         |
+|    time_elapsed         | 34481      |
+|    total_timesteps      | 2064384    |
+| train/                  |            |
+|    approx_kl            | 0.04225265 |
+|    clip_fraction        | 0.0733     |
+|    clip_range           | 0.3        |
+|    entropy_loss         | -0.242     |
+|    explained_variance   | 0.866      |
+|    learning_rate        | 0.0005     |
+|    loss                 | -0.000784  |
+|    n_updates            | 681        |
+|    policy_gradient_loss | 0.000434   |
+|    value_loss           | 0.0116     |
+----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 1           |
+|    deaths               | 2.67        |
+|    event                | 26.7        |
+|    frames               | 1.35e+03    |
+|    healr                | 8.55        |
+|    hp                   | 0.829       |
+|    levels_sum           | 32.2        |
+|    map                  | 20          |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 17.8        |
+|    y                    | 15.7        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 22          |
+|    time_elapsed         | 36101       |
+|    total_timesteps      | 2162688     |
+| train/                  |             |
+|    approx_kl            | 0.009664905 |
+|    clip_fraction        | 0.0349      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.172      |
+|    explained_variance   | 0.879       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00457     |
+|    n_updates            | 682         |
+|    policy_gradient_loss | 0.00185     |
+|    value_loss           | 0.012       |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 3           |
+|    event                | 22.7        |
+|    frames               | 1.06e+03    |
+|    healr                | 6.84        |
+|    hp                   | 0.789       |
+|    levels_sum           | 31.7        |
+|    map                  | 34.5        |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 21.2        |
+|    y                    | 18.8        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 23          |
+|    time_elapsed         | 37744       |
+|    total_timesteps      | 2260992     |
+| train/                  |             |
+|    approx_kl            | 0.013995252 |
+|    clip_fraction        | 0.0418      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.17       |
+|    explained_variance   | 0.894       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.01        |
+|    n_updates            | 683         |
+|    policy_gradient_loss | 0.00257     |
+|    value_loss           | 0.0102      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 3           |
+|    event                | 20          |
+|    frames               | 964         |
+|    healr                | 9.33        |
+|    hp                   | 0.968       |
+|    levels_sum           | 30.2        |
+|    map                  | 26          |
+|    pcount               | 3.17        |
+|    step                 | 1.02e+04    |
+|    x                    | 36.8        |
+|    y                    | 8           |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 24          |
+|    time_elapsed         | 39431       |
+|    total_timesteps      | 2359296     |
+| train/                  |             |
+|    approx_kl            | 0.016370649 |
+|    clip_fraction        | 0.0448      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.213      |
+|    explained_variance   | 0.881       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00469     |
+|    n_updates            | 684         |
+|    policy_gradient_loss | 0.00153     |
+|    value_loss           | 0.0116      |
+-----------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 1.83        |
+|    event                | 27.3        |
+|    frames               | 1.16e+03    |
+|    healr                | 6.98        |
+|    hp                   | 0.855       |
+|    levels_sum           | 30.3        |
+|    map                  | 57.7        |
+|    pcount               | 3.33        |
+|    step                 | 1.02e+04    |
+|    x                    | 7           |
+|    y                    | 15.2        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 25          |
+|    time_elapsed         | 41091       |
+|    total_timesteps      | 2457600     |
+| train/                  |             |
+|    approx_kl            | 0.010143339 |
+|    clip_fraction        | 0.0314      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.13       |
+|    explained_variance   | 0.883       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00472     |
+|    n_updates            | 685         |
+|    policy_gradient_loss | 0.00262     |
+|    value_loss           | 0.0115      |
+-----------------------------------------
+--------------------------------------
+| env_stats/              |          |
+|    badge                | 0.833    |
+|    deaths               | 2.33     |
+|    event                | 29.3     |
+|    frames               | 922      |
+|    healr                | 9.63     |
+|    hp                   | 0.683    |
+|    levels_sum           | 35.2     |
+|    map                  | 43.8     |
+|    pcount               | 3.67     |
+|    step                 | 1.02e+04 |
+|    x                    | 22       |
+|    y                    | 12       |
+| time/                   |          |
+|    fps                  | 59       |
+|    iterations           | 26       |
+|    time_elapsed         | 43134    |
+|    total_timesteps      | 2555904  |
+| train/                  |          |
+|    approx_kl            | 0.640724 |
+|    clip_fraction        | 0.111    |
+|    clip_range           | 0.3      |
+|    entropy_loss         | -0.12    |
+|    explained_variance   | 0.9      |
+|    learning_rate        | 0.0005   |
+|    loss                 | -0.015   |
+|    n_updates            | 686      |
+|    policy_gradient_loss | 0.000734 |
+|    value_loss           | 0.0101   |
+--------------------------------------
+-----------------------------------------
+| env_stats/              |             |
+|    badge                | 0.833       |
+|    deaths               | 4.33        |
+|    event                | 16.7        |
+|    frames               | 1.04e+03    |
+|    healr                | 7.78        |
+|    hp                   | 0.841       |
+|    levels_sum           | 30.2        |
+|    map                  | 21.5        |
+|    pcount               | 2.83        |
+|    step                 | 1.02e+04    |
+|    x                    | 15          |
+|    y                    | 19.7        |
+| time/                   |             |
+|    fps                  | 59          |
+|    iterations           | 27          |
+|    time_elapsed         | 44948       |
+|    total_timesteps      | 2654208     |
+| train/                  |             |
+|    approx_kl            | 0.009454482 |
+|    clip_fraction        | 0.0317      |
+|    clip_range           | 0.3         |
+|    entropy_loss         | -0.127      |
+|    explained_variance   | 0.899       |
+|    learning_rate        | 0.0005      |
+|    loss                 | 0.00705     |
+|    n_updates            | 687         |
+|    policy_gradient_loss | 0.00229     |
+|    value_loss           | 0.0105      |
+-----------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 136, in <module>
+    main()
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 131, in main
+    model.learn(total_timesteps=8_000_000, callback=callback)  # Train the model
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\ppo\ppo.py", line 308, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\on_policy_algorithm.py", line 259, in learn
+    continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\on_policy_algorithm.py", line 178, in collect_rollouts
+    new_obs, rewards, dones, infos = env.step(clipped_actions)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\vec_env\base_vec_env.py", line 197, in step
+    return self.step_wait()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\vec_env\vec_transpose.py", line 95, in step_wait
+    observations, rewards, dones, infos = self.venv.step_wait()
+                                          ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\vec_env\subproc_vec_env.py", line 130, in step_wait
+    results = [remote.recv() for remote in self.remotes]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\vec_env\subproc_vec_env.py", line 130, in <listcomp>
+    results = [remote.recv() for remote in self.remotes]
+               ^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\connection.py", line 321, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

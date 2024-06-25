@@ -1,0 +1,66 @@
+----------------------------------------
+| env_stats/                |          |
+|    badge                  | 1        |
+|    deaths                 | 2.5      |
+|    enemy_defeated         | 21.7     |
+|    event                  | 52.5     |
+|    frames                 | 1.46e+03 |
+|    healr                  | 7.21     |
+|    hp                     | 0.765    |
+|    item_collection_reward | 0        |
+|    levels_sum             | 34.2     |
+|    map                    | 53.8     |
+|    money                  | 0        |
+|    pcount                 | 3.33     |
+|    pokemon_caught         | 20.8     |
+|    step                   | 1.02e+04 |
+|    x                      | 21.2     |
+|    y                      | 16.2     |
+| time/                     |          |
+|    fps                    | 60       |
+|    iterations             | 1        |
+|    time_elapsed           | 1626     |
+|    total_timesteps        | 98304    |
+----------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 136, in <module>
+    main()
+  File "C:\Users\Ian\IdeaProjects\PokemonRedExperiments\baselines\run_baseline_parallel_fast.py", line 131, in main
+    model.learn(total_timesteps=8_000_000, callback=callback)  # Train the model
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\ppo\ppo.py", line 308, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\on_policy_algorithm.py", line 281, in learn
+    self.train()
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\ppo\ppo.py", line 210, in train
+    values, log_prob, entropy = self.policy.evaluate_actions(rollout_data.observations, actions)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 692, in evaluate_actions
+    features = self.extract_features(obs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 640, in extract_features
+    return super().extract_features(obs, self.features_extractor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\policies.py", line 131, in extract_features
+    return features_extractor(preprocessed_obs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\stable_baselines3\common\torch_layers.py", line 106, in forward
+    return self.linear(self.cnn(observations))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\container.py", line 217, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ian\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\nn\modules\linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

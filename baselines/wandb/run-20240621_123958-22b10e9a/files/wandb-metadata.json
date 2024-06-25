@@ -1,0 +1,45 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.11.6",
+    "heartbeatAt": "2024-06-21T18:39:59.267485",
+    "startedAt": "2024-06-21T18:39:58.546265",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\Ian\\IdeaProjects\\PokemonRedExperiments\\baselines\\run_baseline_parallel_fast.py",
+    "codePathLocal": "run_baseline_parallel_fast.py",
+    "codePath": "baselines\\run_baseline_parallel_fast.py",
+    "git": {
+        "remote": "https://github.com/gavinshelley3/PokemonRedExperiments.git",
+        "commit": "ed8f18ca836d7a701953624c4b836f338957b7b8"
+    },
+    "email": "gavinshelley3@hotmail.com",
+    "root": "C:/Users/Ian/IdeaProjects/PokemonRedExperiments",
+    "host": "Ian",
+    "username": "Ian",
+    "executable": "C:\\Users\\Ian\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1803.0,
+        "min": 0.0,
+        "max": 2304.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1803.0,
+            "min": 0.0,
+            "max": 2304.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 475.69237899780273,
+            "used": 357.8849983215332
+        }
+    },
+    "memory": {
+        "total": 15.71163558959961
+    }
+}

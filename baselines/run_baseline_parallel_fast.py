@@ -1,22 +1,26 @@
 from os.path import exists
 from pathlib import Path
-import uuid
 from red_gym_env import RedGymEnv
 from stable_baselines3 import PPO
-from stable_baselines3.common import env_checker
-from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
+from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
 from stable_baselines3.common.callbacks import CheckpointCallback, CallbackList
 from tensorboard_callback import TensorboardCallback
+import wandb
+from wandb.integration.sb3 import WandbCallback
 
 
 def make_env(rank, env_conf, seed=0):
     """
-    Utility function for multiprocessed env.
-    :param env_id: (str) the environment ID
-    :param num_env: (int) the number of environments you wish to have in subprocesses
-    :param seed: (int) the initial seed for RNG
-    :param rank: (int) index of the subprocess
+    Utility function for multiprocessed environment.
+
+    Args:
+    - rank (int): Index of the subprocess.
+    - env_conf (dict): Configuration dictionary for the environment.
+    - seed (int): Initial seed for RNG.
+
+    Returns:
+    - function: Initialized environment with custom reward function.
     """
 
     def _init():
@@ -28,13 +32,47 @@ def make_env(rank, env_conf, seed=0):
     return _init
 
 
-if __name__ == "__main__":
+def find_next_session_path(base_path="session"):
+    """
+    Find the next available session path by incrementing a number.
 
-    use_wandb_logging = False
-    ep_length = 2048 * 10
-    sess_id = str(uuid.uuid4())[:8]
-    sess_path = Path(f"session_{sess_id}")
+    Args:
+    - base_path (str): Base path for the session folders.
 
+    Returns:
+    - Path: Path to the next available session folder.
+    """
+    i = 1
+    while True:
+        sess_path = Path(f"{base_path}_{i}")
+        if not sess_path.exists():
+            sess_path.mkdir(parents=True, exist_ok=True)
+            return sess_path
+        i += 1
+
+
+def main():
+    use_wandb_logging = True  # Set to True to use Weights & Biases for logging
+    ep_length = 1024 * 10  # Reduced Episode length
+    sess_path = (
+        find_next_session_path()
+    )  # Create a session path with the next available number
+
+    # Configuration section for hyperparameters
+    hyperparameters = {
+        "learning_rate": 0.0005,
+        "batch_size": 128,
+        "n_steps": 1024,
+        "gamma": 0.98,
+        "gae_lambda": 0.95,
+        "clip_range": 0.3,
+        "ent_coef": 0.015,
+        "vf_coef": 0.4,
+        "max_grad_norm": 0.55,
+        "n_epochs": 10,
+    }
+
+    # Environment configuration
     env_config = {
         "headless": True,
         "save_final_state": True,
@@ -49,65 +87,50 @@ if __name__ == "__main__":
         "gb_path": "../PokemonRed.gb",
         "debug": False,
         "sim_frame_dist": 2_000_000.0,
-        "use_screen_explore": True,
-        "reward_scale": 4,
-        "extra_buttons": False,
-        "explore_weight": 3,  # 2.5
+        "reward_scale": 5,
+        "extra_buttons": True,
     }
 
-    print(env_config)
-
-    num_cpu = 16  # Also sets the number of episodes per training iteration
+    num_cpu = 6  # Reduced number of parallel environments
     env = SubprocVecEnv([make_env(i, env_config) for i in range(num_cpu)])
 
+    print("\nLoading initial checkpoint")
+    initial_checkpoint_path = "session_4da05e87_main_good/poke_439746560_steps"
+
+    # Load the model and initialize it with hyperparameters
+    model = PPO("CnnPolicy", env, verbose=1, **hyperparameters)
+    model = PPO.load(
+        initial_checkpoint_path,
+        env=env,
+        custom_objects={
+            "learning_rate": hyperparameters["learning_rate"],
+            "clip_range": hyperparameters["clip_range"],
+        },
+    )
+
+    # Set up callbacks for saving checkpoints and logging with TensorBoard
     checkpoint_callback = CheckpointCallback(
-        save_freq=ep_length, save_path=sess_path, name_prefix="poke"
+        save_freq=ep_length,
+        save_path=sess_path,
+        name_prefix="rl_model",
+        save_replay_buffer=True,
+        save_vecnormalize=True,
     )
+    tensorboard_callback = TensorboardCallback()
+    callbacks = [checkpoint_callback, tensorboard_callback]
 
-    callbacks = [checkpoint_callback, TensorboardCallback()]
-
+    # Add wandb logging if enabled
     if use_wandb_logging:
-        import wandb
-        from wandb.integration.sb3 import WandbCallback
+        wandb.init(project="pokemon_red_rl", sync_tensorboard=True)
+        wandb_callback = WandbCallback()
+        callbacks.append(wandb_callback)
 
-        run = wandb.init(
-            project="pokemon-train",
-            id=sess_id,
-            config=env_config,
-            sync_tensorboard=True,
-            monitor_gym=True,
-            save_code=True,
-        )
-        callbacks.append(WandbCallback())
+    callback = CallbackList(callbacks)
 
-    # env_checker.check_env(env)
-    # put a checkpoint here you want to start from
-    file_name = "session_e41c9eff/poke_38207488_steps"
+    # Train the model with the specified hyperparameters
+    model.learn(total_timesteps=8_000_000, callback=callback)  # Train the model
+    model.save(sess_path / "final_model")  # Save the final model
 
-    if exists(file_name + ".zip"):
-        print("\nloading checkpoint")
-        model = PPO.load(file_name, env=env)
-        model.n_steps = ep_length
-        model.n_envs = num_cpu
-        model.rollout_buffer.buffer_size = ep_length
-        model.rollout_buffer.n_envs = num_cpu
-        model.rollout_buffer.reset()
-    else:
-        model = PPO(
-            "CnnPolicy",
-            env,
-            verbose=1,
-            n_steps=ep_length // 8,
-            batch_size=128,
-            n_epochs=3,
-            gamma=0.998,
-            tensorboard_log=sess_path,
-        )
 
-    # run for up to 5k episodes
-    model.learn(
-        total_timesteps=(ep_length) * num_cpu * 5000, callback=CallbackList(callbacks)
-    )
-
-    if use_wandb_logging:
-        run.finish()
+if __name__ == "__main__":
+    main()
