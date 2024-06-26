@@ -7,7 +7,8 @@ from red_gym_env import RedGymEnv
 def run_recorded_actions_on_emulator_and_save_video(sess_id, instance_id, run_index):
     sess_path = Path(f"session_{sess_id}")
     tdf = pd.read_csv(
-        f"session_{sess_id}/agent_stats_{instance_id}.csv.gz", compression="gzip"
+        f"session/session_{sess_id}/agent_stats_{instance_id}.csv.gz",
+        compression="gzip",
     )
     tdf = tdf[tdf["map"] != "map"]  # remove unused
     action_arrays = np.array_split(tdf, np.array((tdf["step"].astype(int) == 0).sum()))

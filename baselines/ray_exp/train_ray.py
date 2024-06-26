@@ -5,7 +5,7 @@ from ray.rllib.algorithms import ppo
 from red_gym_env_ray import RedGymEnv
 
 ep_length = 2048  # 2048 * 8
-sess_path = Path(f"session_{str(uuid.uuid4())[:8]}")
+sess_path = Path(f"session/session_{str(uuid.uuid4())[:8]}")
 
 env_config = {
     "headless": True,

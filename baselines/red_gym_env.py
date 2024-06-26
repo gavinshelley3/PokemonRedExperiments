@@ -1,7 +1,4 @@
-import sys
 import uuid
-import os
-from math import floor, sqrt
 import json
 from pathlib import Path
 
@@ -17,8 +14,30 @@ import pandas as pd
 
 from gymnasium import Env, spaces
 from pyboy.utils import WindowEvent
-from memory_addresses import *
-from reward_functions import *
+from constants.opponent_trainer_constants import ENEMY_PARTY_POKEMON_HP
+from constants.player_constants import (
+    NUM_POKEMON_IN_PARTY_ADDRESS,
+    PARTY_POKEMON_ACTUAL_LEVEL,
+    PARTY_POKEMON_ADDRESSES,
+)
+from rewards.state import (
+    create_exploration_memory,
+    create_recent_memory,
+    update_reward,
+)
+from rewards.badges import get_badges
+from rewards.health import update_heal_reward
+from rewards.items import (
+    get_total_items,
+    get_unique_items,
+    update_item_collection_reward,
+)
+from rewards.money import get_money
+from rewards.opponents import get_total_enemy_pokemon, initialize_enemy_hp
+from rewards.state import get_game_state_reward
+from rewards.utils import read_hp_fraction
+from rewards.map import get_map_location
+from constants.map_constants import *
 
 
 class RedGymEnv(Env):
@@ -52,6 +71,7 @@ class RedGymEnv(Env):
         self.previous_item_count = get_total_items(self)
         self.previous_unique_items = get_unique_items(self)
         self.total_enemy_pokemon = get_total_enemy_pokemon(self)
+        self.total_enemy_defeated_reward = 0
         self.reward_scale = config.get("reward_scale", 1)
         self.extra_buttons = config.get("extra_buttons", False)
         self.instance_id = config.get("instance_id", str(uuid.uuid4())[:8])
@@ -104,14 +124,6 @@ class RedGymEnv(Env):
             low=0, high=255, shape=self.output_full, dtype=np.uint8
         )
 
-        # head = "headless" if config["headless"] else "SDL2"
-        # self.pyboy = PyBoy(
-        #     config["gb_path"],
-        #     debugging=False,
-        #     disable_input=False,
-        #     window_type=head,
-        #     hide_window="--quiet" in sys.argv,
-        # )
         self.screen = self.pyboy.botsupport_manager().screen()
 
         if not config["headless"]:
@@ -174,6 +186,12 @@ class RedGymEnv(Env):
         self.progress_reward = get_game_state_reward(self)
         self.total_reward = sum(val for val in self.progress_reward.values())
         self.reset_count += 1
+
+        initialize_enemy_hp(self)  # Initialize enemy HP states
+        self.enemy_hp = [
+            self.read_hp(addr) for addr in ENEMY_PARTY_POKEMON_HP
+        ]  # Initialize enemy HP list
+
         return self.render(), {}
 
     def init_knn(self):
@@ -228,7 +246,7 @@ class RedGymEnv(Env):
             self.update_seen_coords()
 
         update_heal_reward(self)
-        self.party_size = self.read_m(PARTY_SIZE_ADDRESS)
+        self.party_size = self.read_m(NUM_POKEMON_IN_PARTY_ADDRESS)
 
         new_reward, new_prog = update_reward(self)
         self.last_health = read_hp_fraction(self)
@@ -275,10 +293,10 @@ class RedGymEnv(Env):
 
     # Update agent stats
     def append_agent_stats(self, action):
-        x_pos = self.read_m(X_POS_ADDRESS)
-        y_pos = self.read_m(Y_POS_ADDRESS)
-        map_n = self.read_m(MAP_N_ADDRESS)
-        levels = [self.read_m(a) for a in LEVELS_ADDRESSES]
+        x_pos = self.read_m(CURRENT_PLAYER_X_POSITION)
+        y_pos = self.read_m(CURRENT_PLAYER_Y_POSITION)
+        map_n = self.read_m(CURRENT_MAP_NUMBER)
+        levels = [self.read_m(a) for a in PARTY_POKEMON_ACTUAL_LEVEL]
         expl = (
             ("frames", self.knn_index.get_current_count())
             if self.use_screen_explore
@@ -292,7 +310,7 @@ class RedGymEnv(Env):
                 "map": map_n,
                 "map_location": get_map_location(self, map_n),
                 "last_action": action,
-                "pcount": self.read_m(PARTY_SIZE_ADDRESS),
+                "pcount": self.read_m(NUM_POKEMON_IN_PARTY_ADDRESS),
                 "levels": levels,
                 "levels_sum": sum(levels),
                 "ptypes": self.read_party(),
@@ -324,9 +342,9 @@ class RedGymEnv(Env):
                 )
 
     def update_seen_coords(self):
-        x_pos = self.read_m(X_POS_ADDRESS)
-        y_pos = self.read_m(Y_POS_ADDRESS)
-        map_n = self.read_m(MAP_N_ADDRESS)
+        x_pos = self.read_m(CURRENT_PLAYER_X_POSITION)
+        y_pos = self.read_m(CURRENT_PLAYER_Y_POSITION)
+        map_n = self.read_m(CURRENT_MAP_NUMBER)
         coord_string = f"x:{x_pos} y:{y_pos} m:{map_n}"
         if self.get_levels_sum() >= 22 and not self.levels_satisfied:
             self.levels_satisfied = True
@@ -402,17 +420,27 @@ class RedGymEnv(Env):
             )
 
     def read_m(self, addr):
-        return self.pyboy.get_memory_value(addr)
+        if isinstance(addr, int):
+            return self.pyboy.get_memory_value(addr)
+        elif isinstance(addr, tuple):
+            return 256 * self.read_m(addr[0]) + self.read_m(addr[1])
+        else:
+            raise TypeError(f"Address {addr} is not an integer or tuple")
 
     def read_bit(self, addr, bit: int) -> bool:
         return bin(256 + self.read_m(addr))[-bit - 1] == "1"
 
     def get_levels_sum(self):
-        poke_levels = [max(self.read_m(a) - 2, 0) for a in LEVELS_ADDRESSES]
+        poke_levels = [max(self.read_m(a) - 2, 0) for a in PARTY_POKEMON_ACTUAL_LEVEL]
         return max(sum(poke_levels) - 4, 0)
 
     def read_party(self):
-        return [self.read_m(addr) for addr in PARTY_ADDRESSES]
+        return [self.read_m(addr) for addr in PARTY_POKEMON_ADDRESSES]
 
-    def read_hp(self, start):
-        return 256 * self.read_m(start) + self.read_m(start + 1)
+    def read_hp(self, addr_tuple):
+        if isinstance(addr_tuple, tuple):
+            start = addr_tuple[0]
+            end = addr_tuple[1]
+            return 256 * self.read_m(start) + self.read_m(end)
+        else:
+            raise TypeError(f"Address {addr_tuple} is not a valid tuple")

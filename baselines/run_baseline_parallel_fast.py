@@ -32,7 +32,7 @@ def make_env(rank, env_conf, seed=0):
     return _init
 
 
-def find_next_session_path(base_path="session"):
+def find_next_session_path(base_path="session/session"):
     """
     Find the next available session path by incrementing a number.
 
@@ -95,7 +95,7 @@ def main():
     env = SubprocVecEnv([make_env(i, env_config) for i in range(num_cpu)])
 
     print("\nLoading initial checkpoint")
-    initial_checkpoint_path = "session_4da05e87_main_good/poke_439746560_steps"
+    initial_checkpoint_path = "session/session_4da05e87_main_good/poke_439746560_steps"
 
     # Load the model and initialize it with hyperparameters
     model = PPO("CnnPolicy", env, verbose=1, **hyperparameters)

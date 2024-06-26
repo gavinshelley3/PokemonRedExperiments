@@ -3,9 +3,7 @@ import websockets
 import json
 
 import gymnasium as gym
-
-X_POS_ADDRESS, Y_POS_ADDRESS = 0xD362, 0xD361
-MAP_N_ADDRESS = 0xD35E
+from baselines.constants.map_constants import *
 
 
 class StreamWrapper(gym.Wrapper):
@@ -29,9 +27,9 @@ class StreamWrapper(gym.Wrapper):
 
     def step(self, action):
 
-        x_pos = self.emulator.get_memory_value(X_POS_ADDRESS)
-        y_pos = self.emulator.get_memory_value(Y_POS_ADDRESS)
-        map_n = self.emulator.get_memory_value(MAP_N_ADDRESS)
+        x_pos = self.emulator.get_memory_value(CURRENT_PLAYER_X_POSITION)
+        y_pos = self.emulator.get_memory_value(CURRENT_PLAYER_Y_POSITION)
+        map_n = self.emulator.get_memory_value(CURRENT_MAP_NUMBER)
         self.coord_list.append([x_pos, y_pos, map_n])
 
         if self.steam_step_counter >= self.upload_interval:

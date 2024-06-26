@@ -3,27 +3,24 @@ from einops import rearrange
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from memory_addresses import *
-from map_locations import map_locations
-from pokedex_constants import (
-    pokedex_constants,
-    pokedex_own_addresses,
-    pokedex_seen_addresses,
-)
-from pokemon_constants import pokemon_constants
-from type_constants import *  # Import type constants
-from move_constants import *  # Import move constants
-from battle_constants import *  # Import battle constants
-from player_constants import *  # Import player constants
-from item_constants import *  # Import item constants
-from opponent_trainer_constants import *  # Import opponent trainer constants
-from type_effectiveness_matrix import type_effectiveness
+from constants.event_constants import *
+from constants.map_locations import *
+from constants.map_constants import *
+from constants.pokedex_constants import *
+from constants.pokemon_constants import *
+from constants.type_constants import *
+from constants.move_constants import *
+from constants.battle_constants import *
+from constants.player_constants import *
+from constants.item_constants import *
+from constants.opponent_trainer_constants import *
+from constants.type_effectiveness_matrix import *
 
 # Define all reward-related functions
 
 
 def get_badges(env):
-    return bit_count(env.read_m(BADGE_COUNT_ADDRESS))
+    return bit_count(env.read_m(BADGES))
 
 
 def get_levels_reward(env):
@@ -52,15 +49,13 @@ def get_knn_reward(env):
 
 
 def get_all_events_reward(env):
-    event_flags_start = EVENT_FLAGS_START_ADDRESS
-    event_flags_end = EVENT_FLAGS_END_ADDRESS
-    museum_ticket = (MUSEUM_TICKET_ADDRESS, 0)
+    event_flags_start = EVENT_000_FOLLOWED_OAK_INTO_LAB[0]
+    event_flags_end = EVENT_9FF[0]
     base_event_flags = 13
     return max(
         sum(bit_count(env.read_m(i)) for i in range(event_flags_start, event_flags_end))
         - base_event_flags
-        - int(env.read_bit(museum_ticket[0], museum_ticket[1])),
-        0,
+        - 0,
     )
 
 
@@ -68,7 +63,7 @@ def update_heal_reward(env):
     cur_health = read_hp_fraction(env)
     if (
         cur_health > env.last_health
-        and env.read_m(PARTY_SIZE_ADDRESS) == env.party_size
+        and env.read_m(NUM_POKEMON_IN_PARTY_ADDRESS) == env.party_size
     ):
         if env.last_health > 0:
             heal_amount = cur_health - env.last_health
@@ -173,18 +168,18 @@ def get_total_enemy_pokemon(env):
     return total_enemy_pokemon
 
 
-def get_enemy_pokemon_data(env, pokemon_index, offset):
-    base_address = ENEMY_POKEMON_DATA[pokemon_index]
-    return env.read_m(base_address + offset)
+def get_enemy_pokemon_data(env, pokemon_index):
+    base_address = env.read_m(ENEMY_PARTY_POKEMON[pokemon_index])
+    return base_address
 
 
 def get_enemy_pokemon_hp(env, pokemon_index):
-    hp = get_enemy_pokemon_data(env, pokemon_index, CURRENT_HP_OFFSET)
+    hp = env.read_m(ENEMY_PARTY_POKEMON_HP[pokemon_index])
     return hp
 
 
 def get_enemy_pokemon_level(env, pokemon_index):
-    level = get_enemy_pokemon_data(env, pokemon_index, LEVEL_OFFSET)
+    level = env.read_m(ENEMY_PARTY_POKEMON_LEVEL[pokemon_index])
     return level
 
 
@@ -193,7 +188,68 @@ def get_enemy_pokemon_defeated_reward(env):
     for i in range(get_total_enemy_pokemon(env)):
         if get_enemy_pokemon_hp(env, i) == 0:
             total_defeated += 1
-    return total_defeated * 2  # Reward for defeating enemy Pokémon
+    reward_for_round = total_defeated * 2  # Reward for defeating enemy Pokémon
+    env.total_enemy_defeated_reward += reward_for_round
+    return env.total_enemy_defeated_reward
+
+
+def get_status_effect_reward(env):
+    status_effects = [
+        ENEMY_PARALYZED_BIT,
+        ENEMY_FROZEN_BIT,
+        ENEMY_BURNED_BIT,
+        ENEMY_POISONED_BIT,
+    ]
+    reward = 0
+    for effect in status_effects:
+        if env.read_bit(ENEMY_STATUS, effect):
+            reward += 1  # Adjust the multiplier as needed
+    sleep_counter = env.read_m(ENEMY_STATUS) & 0x07  # Bits 0-2
+    if sleep_counter > 0:
+        reward += 1  # Adjust the multiplier as needed
+    return reward
+
+
+def get_move_effectiveness(env):
+    move_type = env.read_m(PLAYER_MOVE_TYPE)
+    enemy_type1 = env.read_m(ENEMY_TYPE1)
+    enemy_type2 = env.read_m(ENEMY_TYPE2)
+
+    effectiveness1 = type_effectiveness.get((move_type, enemy_type1), 1)
+    effectiveness2 = type_effectiveness.get((move_type, enemy_type2), 1)
+
+    effectiveness = effectiveness1 * effectiveness2
+
+    if effectiveness > 1:
+        return 1  # Super effective
+    elif effectiveness < 1:
+        return -1  # Not very effective
+    else:
+        return 0  # Neutral
+
+
+def get_move_effectiveness_reward(env):
+    effectiveness = get_move_effectiveness(env)
+    return effectiveness * 2  # Adjust reward scaling as needed
+
+
+def get_powerful_move_reward(env):
+    total_enemy_pokemon = get_total_enemy_pokemon(env)
+    total_reward = 0
+
+    for i in range(total_enemy_pokemon):
+        enemy_hp = get_enemy_pokemon_hp(env, i)
+        max_enemy_hp = get_enemy_pokemon_max_hp(env, i)
+
+        if max_enemy_hp > 0:
+            hp_fraction = (max_enemy_hp - enemy_hp) / max_enemy_hp
+            total_reward += hp_fraction * 3  # Adjust the multiplier as needed
+
+    return total_reward
+
+
+def get_enemy_pokemon_max_hp(env, pokemon_index):
+    return ENEMY_PARTY_POKEMON_MAX_HP[pokemon_index]
 
 
 # Add the new reward functions to the state scores
@@ -210,6 +266,8 @@ def get_game_state_reward(env, print_stats=False):
         "pokemon_caught": env.reward_scale * get_pokemon_caught_reward(env),
         "money": env.reward_scale * get_money_reward(env),
         "enemy_defeated": env.reward_scale * get_enemy_pokemon_defeated_reward(env),
+        "type_effectiveness": env.reward_scale * get_move_effectiveness_reward(env),
+        "status_effect": env.reward_scale * get_status_effect_reward(env),
         "powerful_move": env.reward_scale * get_powerful_move_reward(env),
     }
     return state_scores
@@ -246,7 +304,7 @@ def update_reward(env):
 
 
 def update_max_op_level(env):
-    opponent_level = max(env.read_m(a) for a in OPPONENT_LEVELS_ADDRESSES) - 5
+    opponent_level = max(env.read_m(a) for a in ENEMY_PARTY_POKEMON_LEVEL) - 5
     env.max_opponent_level = max(env.max_opponent_level, opponent_level)
     return env.max_opponent_level * 0.2
 
@@ -258,8 +316,8 @@ def update_max_event_rew(env):
 
 
 def read_hp_fraction(env):
-    hp_sum = sum(env.read_hp(add) for add in HP_ADDRESSES)
-    max_hp_sum = sum(env.read_hp(add) for add in MAX_HP_ADDRESSES)
+    hp_sum = sum(env.read_hp(add) for add in PARTY_POKEMON_HP)
+    max_hp_sum = sum(env.read_hp(add) for add in PARTY_POKEMON_MAX_HP)
     max_hp_sum = max(max_hp_sum, 1)
     return hp_sum / max_hp_sum
 
@@ -313,11 +371,12 @@ def get_total_items(env):
 
 
 def get_unique_items(env):
+    # Read every other byte to see if the item is in the bag
     unique_items = set()
-    for item_address, quantity_address in ITEMS:
-        item_id = env.read_m(item_address)
-        if item_id != 0:  # 0 means empty slot
-            unique_items.add(item_id)
+    for i in range(0, 256, 2):
+        item = env.read_m(ITEMS + i)
+        if item != 0:
+            unique_items.add(item)
     return len(unique_items)
 
 
@@ -345,16 +404,15 @@ def get_item_collection_reward(env):
 
 
 def get_total_pokemon_caught(env):
-    PARTY_POKEMON_COUNT = (
-        0xD163  # Replace with the actual address for the count of Pokémon in the party
-    )
-    return env.read_m(PARTY_POKEMON_COUNT)
+    total_pokemon = 0
+    for addr in range(POKEDEX_OWNED_START, POKEDEX_OWNED_END + 1):
+        owned_flags = env.read_m(addr)
+        total_pokemon += bit_count(owned_flags)
+
+    return total_pokemon
 
 
 def get_unique_pokemon_caught(env):
-    POKEDEX_OWNED_START = pokedex_own_addresses[0]
-    POKEDEX_OWNED_END = pokedex_own_addresses[18]
-
     unique_pokemon = set()
     for addr in range(POKEDEX_OWNED_START, POKEDEX_OWNED_END + 1):
         owned_flags = env.read_m(addr)
@@ -386,46 +444,45 @@ def get_pokemon_catch_reward(env):
     return env.pokemon_catch_reward
 
 
-def get_move_effectiveness(env):
-    move_type = env.read_m(PLAYER_MOVE_TYPE)
-    enemy_type1 = env.read_m(ENEMY_TYPE1)
-    enemy_type2 = env.read_m(ENEMY_TYPE2)
+def get_total_pokemon_seen(env):
+    total_pokemon = 0
+    for addr in range(POKEDEX_SEEN_START, POKEDEX_SEEN_END + 1):
+        seen_flags = env.read_m(addr)
+        total_pokemon += bit_count(seen_flags)
 
-    effectiveness1 = type_effectiveness.get((move_type, enemy_type1), 1)
-    effectiveness2 = type_effectiveness.get((move_type, enemy_type2), 1)
-
-    effectiveness = effectiveness1 * effectiveness2
-
-    if effectiveness > 1:
-        return 1  # Super effective
-    elif effectiveness < 1:
-        return -1  # Not very effective
-    else:
-        return 0  # Neutral
+    return total_pokemon
 
 
-def get_move_effectiveness_reward(env):
-    effectiveness = get_move_effectiveness(env)
-    return effectiveness * 2  # Adjust reward scaling as needed
+def get_unique_pokemon_seen(env):
+    unique_pokemon = set()
+    for addr in range(POKEDEX_SEEN_START, POKEDEX_SEEN_END + 1):
+        seen_flags = env.read_m(addr)
+        for i in range(8):
+            if seen_flags & (1 << i):
+                unique_pokemon.add((addr - POKEDEX_SEEN_START) * 8 + i)
+
+    return len(unique_pokemon)
 
 
-def get_powerful_move_reward(env):
-    total_enemy_pokemon = get_total_enemy_pokemon(env)
-    total_reward = 0
+def update_pokemon_seen_reward(env):
+    current_pokemon_count = get_total_pokemon_seen(env)
+    current_unique_pokemon = get_unique_pokemon_seen(env)
 
-    for i in range(total_enemy_pokemon):
-        enemy_hp = get_enemy_pokemon_hp(env, i)
-        max_enemy_hp = get_enemy_pokemon_max_hp(env, i)
+    new_pokemon = current_pokemon_count - env.previous_pokemon_seen_count
+    new_unique_pokemon = current_unique_pokemon - env.previous_unique_pokemon_seen
 
-        if max_enemy_hp > 0:
-            hp_fraction = (max_enemy_hp - enemy_hp) / max_enemy_hp
-            total_reward += hp_fraction * 3  # Adjust the multiplier as needed
+    if new_pokemon > 0:
+        env.pokemon_seen_reward += new_pokemon
 
-    return total_reward
+    if new_unique_pokemon > 0:
+        env.pokemon_seen_reward += new_unique_pokemon * 1
+
+    env.previous_pokemon_seen_count = current_pokemon_count
+    env.previous_unique_pokemon_seen = current_unique_pokemon
 
 
-def get_enemy_pokemon_max_hp(env, pokemon_index):
-    return get_enemy_pokemon_data(env, pokemon_index, MAX_HP_OFFSET)
+def get_pokemon_seen_reward(env):
+    return env.pokemon_seen_reward
 
 
 def save_screenshot(env, name):

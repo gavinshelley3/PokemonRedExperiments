@@ -7,6 +7,9 @@ from pathlib import Path
 
 import logging
 
+from baselines.constants.event_constants import *
+
+
 logging.getLogger("pyboy.plugins.window_headless").setLevel(logging.WARNING)
 
 import numpy as np
@@ -22,7 +25,10 @@ import gymnasium as gym
 from gymnasium import spaces
 
 from pyboy.utils import WindowEvent
-from memory_addresses import *
+from baselines.constants.player_constants import *
+from baselines.constants.opponent_trainer_constants import *
+from baselines.constants.item_constants import *
+from baselines.constants.map_constants import *
 
 
 class RedGymEnv(gym.Env):
@@ -265,17 +271,17 @@ class RedGymEnv(gym.Env):
         )
 
     def append_agent_stats(self):
-        x_pos = self.read_m(X_POS_ADDRESS)
-        y_pos = self.read_m(Y_POS_ADDRESS)
-        map_n = self.read_m(MAP_N_ADDRESS)
-        levels = [self.read_m(a) for a in LEVELS_ADDRESSES]
+        x_pos = self.read_m(CURRENT_PLAYER_X_POSITION)
+        y_pos = self.read_m(CURRENT_PLAYER_Y_POSITION)
+        map_n = self.read_m(CURRENT_MAP_NUMBER)
+        levels = [self.read_m(a) for a in PARTY_POKEMON_ACTUAL_LEVEL]
         self.agent_stats.append(
             {
                 "step": self.step_count,
                 "x": x_pos,
                 "y": y_pos,
                 "map": map_n,
-                "pcount": self.read_m(PARTY_SIZE_ADDRESS),
+                "pcount": self.read_m(NUM_POKEMON_IN_PARTY_ADDRESS),
                 "levels": levels,
                 "ptypes": self.read_party(),
                 "hp": self.read_hp_fraction(),
@@ -444,7 +450,7 @@ class RedGymEnv(gym.Env):
         return bin(256 + self.read_m(addr))[-bit - 1] == "1"
 
     def get_levels_sum(self):
-        poke_levels = [max(self.read_m(a) - 2, 0) for a in LEVELS_ADDRESSES]
+        poke_levels = [max(self.read_m(a) - 2, 0) for a in PARTY_POKEMON_ACTUAL_LEVEL]
         return max(sum(poke_levels) - 4, 0)  # subtract starting pokemon level
 
     def get_levels_reward(self):
@@ -467,10 +473,10 @@ class RedGymEnv(gym.Env):
         return base + post
 
     def get_badges(self):
-        return self.bit_count(self.read_m(BADGE_COUNT_ADDRESS))
+        return self.bit_count(self.read_m(BADGES))
 
     def read_party(self):
-        return [self.read_m(addr) for addr in PARTY_ADDRESSES]
+        return [self.read_m(addr) for addr in NUM_POKEMON_IN_PARTY_ADDRESS]
 
     def update_heal_reward(self):
         cur_health = self.read_hp_fraction()
@@ -489,7 +495,7 @@ class RedGymEnv(gym.Env):
             sum(
                 [
                     self.bit_count(self.read_m(i))
-                    for i in range(EVENT_FLAGS_START_ADDRESS, EVENT_FLAGS_END_ADDRESS)
+                    for i in range(EVENT_000_FOLLOWED_OAK_INTO_LAB[0], EVENT_9FF[0])
                 ]
             )
             - 13,
@@ -550,7 +556,7 @@ class RedGymEnv(gym.Env):
 
     def update_max_op_level(self):
         # opponent_level = self.read_m(0xCFE8) - 5 # base level
-        opponent_level = max([self.read_m(a) for a in OPPONENT_LEVELS_ADDRESSES]) - 5
+        opponent_level = max([self.read_m(a) for a in ENEMY_PARTY_POKEMON_LEVEL]) - 5
         # if opponent_level >= 7:
         #    self.save_screenshot('highlevelop')
         self.max_opponent_level = max(self.max_opponent_level, opponent_level)
@@ -562,8 +568,8 @@ class RedGymEnv(gym.Env):
         return self.max_event_rew
 
     def read_hp_fraction(self):
-        hp_sum = sum([self.read_hp(add) for add in HP_ADDRESSES])
-        max_hp_sum = sum([self.read_hp(add) for add in MAX_HP_ADDRESSES])
+        hp_sum = sum([self.read_hp(add) for add in PARTY_POKEMON_HP])
+        max_hp_sum = sum([self.read_hp(add) for add in PARTY_POKEMON_MAX_HP])
         return hp_sum / max_hp_sum
 
     def read_hp(self, start):
@@ -585,7 +591,7 @@ class RedGymEnv(gym.Env):
 
     def read_money(self):
         return (
-            100 * 100 * self.read_bcd(self.read_m(MONEY_ADDRESS_1))
-            + 100 * self.read_bcd(self.read_m(MONEY_ADDRESS_2))
-            + self.read_bcd(self.read_m(MONEY_ADDRESS_3))
+            100 * 100 * self.read_bcd(self.read_m(MONEY_1))
+            + 100 * self.read_bcd(self.read_m(MONEY_2))
+            + self.read_bcd(self.read_m(MONEY_3))
         )

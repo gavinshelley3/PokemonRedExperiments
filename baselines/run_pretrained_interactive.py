@@ -17,7 +17,7 @@ def make_env(rank, env_conf, seed=0):
     return _init
 
 
-def find_next_session_path(base_path="session"):
+def find_next_session_path(base_path="session/session"):
     i = 1
     while True:
         sess_path = Path(f"{base_path}_{i}")
@@ -52,7 +52,7 @@ def run_experiment(update_interval):
     num_cpu = 1
     env = make_env(0, env_config)()
 
-    file_name = "session_4da05e87_main_good/poke_439746560_steps"
+    file_name = "session/session_4da05e87_main_good/poke_439746560_steps"
     print("\nloading checkpoint")
     model = PPO.load(
         file_name, env=env, custom_objects={"lr_schedule": 0, "clip_range": 0}

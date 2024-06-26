@@ -30,7 +30,7 @@ def make_env(rank, env_conf, seed=0):
 if __name__ == "__main__":
 
     ep_length = 2048 * 8
-    sess_path = Path(f"session_{str(uuid.uuid4())[:8]}")
+    sess_path = Path(f"session/session_{str(uuid.uuid4())[:8]}")
 
     env_config = {
         "headless": True,
@@ -59,10 +59,10 @@ if __name__ == "__main__":
     # env_checker.check_env(env)
     learn_steps = 40
     file_name = (
-        "session_e41c9eff/poke_38207488_steps"  #'session_e41c9eff/poke_250871808_steps'
+        "session/session_e41c9eff/poke_38207488_steps"  #'session/session_e41c9eff/poke_250871808_steps'
     )
 
-    #'session_bfdca25a/poke_42532864_steps' #'session_d3033abb/poke_47579136_steps' #'session_a17cc1f5/poke_33546240_steps' #'session_e4bdca71/poke_8945664_steps' #'session_eb21989e/poke_40255488_steps' #'session_80f70ab4/poke_58982400_steps'
+    #'session/session_bfdca25a/poke_42532864_steps' #'session/session_d3033abb/poke_47579136_steps' #'session/session_a17cc1f5/poke_33546240_steps' #'session/session_e4bdca71/poke_8945664_steps' #'session/session_eb21989e/poke_40255488_steps' #'session/session_80f70ab4/poke_58982400_steps'
     if exists(file_name + ".zip"):
         print("\nloading checkpoint")
         model = PPO.load(file_name, env=env)

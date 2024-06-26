@@ -179,7 +179,7 @@ def test_render(name, dat, walks, bg):
 
 if __name__ == '__main__':
     
-    run_dir = Path('baselines/session_4da05e87') # Path('baselines/session_ebdfe818')
+    run_dir = Path('baselines/session/session_4da05e87') # Path('baselines/session/session_ebdfe818')
 # original session_e41c9eff, main session_4da05e87, extra session_e1b6d2dc
     
     coords_save_pth = Path('base_coords.npz')
