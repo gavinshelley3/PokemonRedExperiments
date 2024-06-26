@@ -1,3 +1,4 @@
+import logging
 from math import floor
 from einops import rearrange
 import numpy as np
@@ -15,43 +16,43 @@ from constants.opponent_trainer_constants import *
 from constants.type_effectiveness_matrix import *
 from constants.opponent_trainer_constants import ENEMY_PARTY_POKEMON_LEVEL
 
-from rewards.badges import get_badges
-from rewards.levels import get_levels_reward
-from rewards.exploration import get_knn_reward
-from rewards.events import get_all_events_reward
-from rewards.health import get_heal_reward, get_died_reward
+from rewards.badges import get_badge_reward, get_badges
+from rewards.dead import get_dead_reward
+from rewards.levels import get_level_reward
+from rewards.exploration import get_explore_reward
+from rewards.events import get_all_events_reward, get_event_reward
+from rewards.health import get_heal_reward
 from rewards.items import get_item_collection_reward
 from rewards.money import get_money_reward
 from rewards.pokemon import get_pokemon_caught_reward
-from rewards.opponents import get_enemy_pokemon_defeated_reward
-from rewards.status_effects import get_status_effect_reward
+from rewards.opponents import get_enemy_pokemon_defeated_reward, get_op_level_reward
 from rewards.moves import (
-    get_move_effectiveness_reward,
     get_powerful_move_reward,
+    get_type_effectiveness_reward,
 )
 from rewards.events import get_all_events_reward
 from rewards.badges import get_badges
 from rewards.utils import read_hp_fraction, save_screenshot
 
 
-def get_game_state_reward(env, print_stats=False):
-    state_scores = {
-        "event": env.reward_scale * update_max_event_rew(env),
-        "level": env.reward_scale * get_levels_reward(env),
-        "heal": env.reward_scale * get_heal_reward(env),
-        "op_lvl": env.reward_scale * update_max_op_level(env),
-        "dead": env.reward_scale * get_died_reward(env),
-        "badge": env.reward_scale * get_badges(env) * 5,
-        "explore": env.reward_scale * get_knn_reward(env),
-        "item": env.reward_scale * get_item_collection_reward(env),
-        "pokemon_caught": env.reward_scale * get_pokemon_caught_reward(env),
-        "money": env.reward_scale * get_money_reward(env),
-        "enemy_defeated": env.reward_scale * get_enemy_pokemon_defeated_reward(env),
-        "type_effectiveness": env.reward_scale * get_move_effectiveness_reward(env),
-        "status_effect": env.reward_scale * get_status_effect_reward(env),
-        "powerful_move": env.reward_scale * get_powerful_move_reward(env),
+def get_game_state_reward(env):
+    rewards = {
+        "event": get_event_reward(env),
+        "level": get_level_reward(env),
+        "heal": get_heal_reward(env),
+        "op_lvl": get_op_level_reward(env),
+        "dead": get_dead_reward(env),
+        "badge": get_badge_reward(env),
+        "explore": get_explore_reward(env),
+        "item": get_item_collection_reward(env),
+        "pokemon_caught": get_pokemon_caught_reward(env),
+        "money": get_money_reward(env),
+        "enemy_defeated": get_enemy_pokemon_defeated_reward(env),
+        "type_effectiveness": get_type_effectiveness_reward(env),
+        "powerful_move": get_powerful_move_reward(env),
     }
-    return state_scores
+    logging.info(f"Calculated rewards: {rewards}")
+    return rewards
 
 
 def group_rewards(env):

@@ -31,7 +31,7 @@ def get_move_effectiveness(env):
         return 0  # Neutral
 
 
-def get_move_effectiveness_reward(env):
+def get_type_effectiveness_reward(env):
     effectiveness = get_move_effectiveness(env)
     return effectiveness * 2  # Adjust reward scaling as needed
 

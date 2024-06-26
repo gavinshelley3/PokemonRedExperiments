@@ -515,7 +515,7 @@ class RedGymEnv(Env):
         poke_levels = [max(self.read_m(a) - 2, 0) for a in PARTY_POKEMON_ACTUAL_LEVEL]
         return max(sum(poke_levels) - 4, 0)
 
-    def get_levels_reward(self):
+    def get_level_reward(self):
         explore_thresh = 22
         scale_factor = 4
         level_sum = self.get_levels_sum()
@@ -575,7 +575,7 @@ class RedGymEnv(Env):
     def get_game_state_reward(self, print_stats=False):
         state_scores = {
             "event": self.reward_scale * self.update_max_event_rew(),
-            "level": self.reward_scale * self.get_levels_reward(),
+            "level": self.reward_scale * self.get_level_reward(),
             "heal": self.reward_scale * self.total_healing_rew,
             "op_lvl": self.reward_scale * self.update_max_op_level(),
             "dead": self.reward_scale * -0.1 * self.died_count,

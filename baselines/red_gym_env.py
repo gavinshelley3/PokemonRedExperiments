@@ -1,4 +1,6 @@
+import sys
 import uuid
+import logging
 import json
 from pathlib import Path
 
@@ -14,7 +16,6 @@ import pandas as pd
 
 from gymnasium import Env, spaces
 from pyboy.utils import WindowEvent
-from constants.opponent_trainer_constants import ENEMY_PARTY_POKEMON_HP
 from constants.player_constants import (
     NUM_POKEMON_IN_PARTY_ADDRESS,
     PARTY_POKEMON_ACTUAL_LEVEL,
@@ -129,6 +130,7 @@ class RedGymEnv(Env):
         if not config["headless"]:
             self.pyboy.set_emulation_speed(6)
 
+        self.enemy_hp = [0] * self.total_enemy_pokemon  # Initialize enemy_hp attribute
         self.reset()
 
     def reset(self, seed=None, options=None):
@@ -184,13 +186,11 @@ class RedGymEnv(Env):
         self.party_size = 0
         self.step_count = 0
         self.progress_reward = get_game_state_reward(self)
+        logging.info(f"Initial progress_reward: {self.progress_reward}")
         self.total_reward = sum(val for val in self.progress_reward.values())
         self.reset_count += 1
 
         initialize_enemy_hp(self)  # Initialize enemy HP states
-        self.enemy_hp = [
-            self.read_hp(addr) for addr in ENEMY_PARTY_POKEMON_HP
-        ]  # Initialize enemy HP list
 
         return self.render(), {}
 
@@ -375,7 +375,10 @@ class RedGymEnv(Env):
             for key, val in self.progress_reward.items():
                 prog_string += f" {key}: {val:5.2f}"
             prog_string += f" sum: {self.total_reward:5.2f}"
-            print(f"\r{prog_string}", end="", flush=True)
+
+            # Ensure it fits within one line
+            sys.stdout.write(f"\r{prog_string}")
+            sys.stdout.flush()
 
         if self.step_count % 50 == 0:
             plt.imsave(
@@ -401,6 +404,22 @@ class RedGymEnv(Env):
                         f"frame_r{self.total_reward:.4f}_{self.reset_count}_full.jpeg"
                     ),
                     self.render(reduce_res=False),
+                )
+
+            if self.save_video and done:
+                self.full_frame_writer.close()
+                self.model_frame_writer.close()
+
+            if done:
+                self.all_runs.append(self.progress_reward)
+                with open(
+                    self.s_path / Path(f"all_runs_{self.instance_id}.json"), "w"
+                ) as f:
+                    json.dump(self.all_runs, f)
+                pd.DataFrame(self.agent_stats).to_csv(
+                    self.s_path / Path(f"agent_stats_{self.instance_id}.csv.gz"),
+                    compression="gzip",
+                    mode="a",
                 )
 
         if self.save_video and done:

@@ -36,12 +36,28 @@ def initialize_enemy_hp(env):
 
 
 def get_enemy_pokemon_defeated_reward(env):
-    total_defeated = 0
-    for i in range(get_total_enemy_pokemon(env)):
-        current_hp = get_enemy_pokemon_hp(env, i)
-        if current_hp == 0 and env.enemy_hp[i] > 0:
-            total_defeated += 1
-        env.enemy_hp[i] = current_hp  # Update the HP state
-    reward_for_round = total_defeated * 2  # Reward for defeating enemy Pokémon
-    env.total_enemy_defeated_reward += reward_for_round
-    return env.total_enemy_defeated_reward
+    total_reward = 0
+    for i in range(env.total_enemy_pokemon):
+        try:
+            current_hp = env.read_hp(ENEMY_PARTY_POKEMON_HP[i])
+            if current_hp == 0 and env.enemy_hp[i] > 0:
+                total_reward += 1
+            env.enemy_hp[i] = current_hp
+        except IndexError:
+            # If the index is out of range, continue to the next iteration
+            continue
+    return total_reward
+
+
+def get_op_level_reward(env):
+    total_reward = 0
+    for i in range(env.total_enemy_pokemon):
+        try:
+            current_level = env.read_m(ENEMY_PARTY_POKEMON_LEVEL[i])
+            if current_level > env.enemy_levels[i]:
+                total_reward += 1
+            env.enemy_levels[i] = current_level
+        except IndexError:
+            # If the index is out of range, continue to the next iteration
+            continue
+    return total_reward

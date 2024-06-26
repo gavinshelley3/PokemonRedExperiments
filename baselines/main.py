@@ -1,5 +1,6 @@
 import logging
 import sys
+import re
 import tensorflow as tf
 from pathlib import Path
 from red_gym_env import RedGymEnv
@@ -8,16 +9,7 @@ from stable_baselines3.common.utils import set_random_seed
 from math import floor
 from einops import rearrange
 from rewards.badges import get_badges
-from rewards.events import get_all_events_reward
-from rewards.state import update_max_event_rew, update_max_op_level
-from rewards.items import (
-    get_item_collection_reward,
-    update_item_collection_reward,
-    get_total_items,
-    get_unique_items,
-)
-from rewards.state import get_game_state_reward
-from rewards.utils import read_hp_fraction, save_screenshot
+from rewards.utils import read_hp_fraction
 import numpy as np
 from constants.event_constants import *
 from constants.map_locations import *
@@ -36,9 +28,12 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-MODEL_FILE1 = "session/session_4da05e87_main_good/poke_439746560_steps"
-MODEL_FILE2 = "baselines/checkpoints/ppo_model_512_steps"
+MODEL_DIR = "checkpoints"
 HEADLESS = False
+
+# Placeholder for the model and step count
+current_model = None
+current_step = 0
 
 
 def group_rewards(env):
@@ -47,27 +42,6 @@ def group_rewards(env):
         prog["level"] * 100 / env.reward_scale,
         read_hp_fraction(env) * 2000,
         prog["explore"] * 150 / (env.explore_weight * env.reward_scale),
-    )
-
-
-def update_reward(env):
-    old_prog = group_rewards(env)
-    env.progress_reward = get_game_state_reward(env)
-    new_prog = group_rewards(env)
-    new_total = sum(val for val in env.progress_reward.values())
-    new_step = new_total - env.total_reward
-
-    if new_step < 0 and read_hp_fraction(env) > 0:
-        save_screenshot(env, "neg_reward")
-
-    env.total_reward = new_total
-    return (
-        new_step,
-        (
-            new_prog[0] - old_prog[0],
-            new_prog[1] - old_prog[1],
-            new_prog[2] - old_prog[2],
-        ),
     )
 
 
@@ -131,16 +105,40 @@ def find_next_session_path(base_path="session/session"):
 
 
 def load_model(env):
-    try:
-        print("\nloading checkpoint")
+    # Regular expression to extract step count from the filename
+    step_pattern = re.compile(r"ppo_model_(\d+)_steps")
+
+    # Find all model files and sort by the extracted step count
+    model_files = sorted(
+        Path(MODEL_DIR).glob("*.zip"),
+        key=lambda x: (
+            int(step_pattern.search(x.stem).group(1))
+            if step_pattern.search(x.stem)
+            else -1
+        ),
+    )
+
+    if model_files and model_files[-1].exists():
+        model_path = model_files[-1]
+        print(f"\nLoading latest checkpoint from: {model_path}")
         model = PPO.load(
-            MODEL_FILE2, env=env, custom_objects={"lr_schedule": 0, "clip_range": 0}
+            model_path, env=env, custom_objects={"lr_schedule": 0, "clip_range": 0}
         )
-        print("checkpoint loaded")
-    except FileNotFoundError:
+        print(f"Checkpoint loaded from file: {model_path.name}")
+        # Extract the step count from the filename
+        global current_step
+        current_step = int(step_pattern.search(model_path.stem).group(1))
+    else:
         print("No checkpoint found. Starting fresh.")
         model = PPO("CnnPolicy", env, verbose=1)
+        current_step = 0
     return model
+
+
+def save_model(model, step):
+    model_path = Path(MODEL_DIR) / f"ppo_model_{step}_steps.zip"
+    model.save(model_path)
+    print(f"Model saved at {model_path}")
 
 
 def run_experiment(update_interval, env_config):
@@ -165,70 +163,88 @@ def run_experiment(update_interval, env_config):
     step = 0
     total_rewards = 0
 
-    while True:
-        action, _states = model.predict(obs, deterministic=False)
+    print("Starting the experiment...")
 
-        if action >= len(env.valid_actions):
-            logging.warning(f"Invalid action: {action}. Defaulting to no-op action.")
-            action = len(env.valid_actions) - 1
+    try:
+        while True:
+            action, _states = model.predict(obs, deterministic=True)
 
-        try:
-            next_obs, rewards, terminated, truncated, info = env.step(action)
-        except IndexError:
-            logging.error(f"Error: Action {action} is out of bounds.")
-            break
+            if action >= len(env.valid_actions):
+                logging.warning(
+                    f"Invalid action: {action}. Defaulting to no-op action."
+                )
+                action = len(env.valid_actions) - 1
 
-        env.render()
+            try:
+                next_obs, rewards, terminated, truncated, info = env.step(action)
+            except IndexError:
+                logging.error(f"Error: Action {action} is out of bounds.")
+                break
 
-        with writer.as_default():
-            tf.summary.scalar("reward", rewards, step=step)
-            for key, value in info.items():
-                tf.summary.scalar(key, value, step=step)
+            env.render()
 
-        obs_buffer.append(obs)
-        action_buffer.append(action)
-        reward_buffer.append(rewards)
-        next_obs_buffer.append(next_obs)
-        done_buffer.append(terminated or truncated)
+            with writer.as_default():
+                tf.summary.scalar("reward", rewards, step=step)
+                for key, value in info.items():
+                    tf.summary.scalar(key, value, step=step)
 
-        if len(obs_buffer) >= update_interval:
-            logging.info(f"Updating model at step {step}")
-            model.learn(total_timesteps=update_interval, log_interval=1)
-            obs_buffer, action_buffer, reward_buffer, next_obs_buffer, done_buffer = (
-                [],
-                [],
-                [],
-                [],
-                [],
-            )
+            obs_buffer.append(obs)
+            action_buffer.append(action)
+            reward_buffer.append(rewards)
+            next_obs_buffer.append(next_obs)
+            done_buffer.append(terminated or truncated)
 
-        obs = next_obs
-        total_rewards += rewards
-        step += 1
+            if len(obs_buffer) >= update_interval:
+                logging.info(f"Updating model at step {step}")
+                model.learn(total_timesteps=update_interval, log_interval=1)
+                (
+                    obs_buffer,
+                    action_buffer,
+                    reward_buffer,
+                    next_obs_buffer,
+                    done_buffer,
+                ) = (
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                )
 
-        rewards_dict = {
-            "step": step,
-            "total_rewards": total_rewards,
-            "event": info.get("event", 0),
-            "level": info.get("level", 0),
-            "heal": info.get("heal", 0),
-            "op_lvl": info.get("op_lvl", 0),
-            "dead": info.get("dead", 0),
-            "badge": info.get("badge", 0),
-            "explore": info.get("explore", 0),
-            "item": info.get("item", 0),
-            "pokemon_caught": info.get("pokemon_caught", 0),
-            "money": info.get("money", 0),
-            "enemy_defeated": info.get("enemy_defeated", 0),
-            "type_effectiveness": info.get("type_effectiveness", 0),
-        }
+            obs = next_obs
+            total_rewards += rewards
+            step += 1
 
-        print_rewards(rewards_dict)
+            rewards_dict = {
+                "step": step,
+                "total_rewards": total_rewards,
+                "event": info.get("event", 0),
+                "level": info.get("level", 0),
+                "heal": info.get("heal", 0),
+                "op_lvl": info.get("op_lvl", 0),
+                "dead": info.get("dead", 0),
+                "badge": info.get("badge", 0),
+                "explore": info.get("explore", 0),
+                "item": info.get("item", 0),
+                "pokemon_caught": info.get("pokemon_caught", 0),
+                "money": info.get("money", 0),
+                "enemy_defeated": info.get("enemy_defeated", 0),
+                "type_effectiveness": info.get("type_effectiveness", 0),
+            }
 
-        if terminated or truncated:
-            break
+            print_rewards(rewards_dict)
 
-    env.close()
+            # Add logging for debugging
+            logging.info(f"Step: {step}, Total Rewards: {total_rewards}")
+            if terminated or truncated:
+                logging.info(f"Terminated: {terminated}, Truncated: {truncated}")
+                break
+    except KeyboardInterrupt:
+        print("\nExperiment interrupted. Saving the model...")
+        save_model(model, step)
+        print("Model saved successfully. Exiting.")
+    finally:
+        env.close()
     return total_rewards
 
 
@@ -239,7 +255,7 @@ def print_rewards(rewards):
 
 
 def find_best_update_interval(env_config):
-    intervals = [512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]
+    intervals = [131072, 65536, 32768, 16384, 8192, 4096, 2048, 1024, 512]
     results = {}
 
     for interval in intervals:

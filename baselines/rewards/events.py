@@ -34,3 +34,7 @@ def get_all_events_reward(env):
     total_events_completed = max(total_bits_set - base_event_flags, 0)
 
     return total_events_completed
+
+
+def get_event_reward(env):
+    return get_all_events_reward(env) * 10

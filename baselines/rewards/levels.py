@@ -12,13 +12,8 @@ from constants.opponent_trainer_constants import *
 from constants.type_effectiveness_matrix import *
 
 
-def get_levels_reward(env):
-    explore_thresh = 22
-    scale_factor = 4
-    level_sum = env.get_levels_sum()
-    if level_sum < explore_thresh:
-        scaled = level_sum
-    else:
-        scaled = (level_sum - explore_thresh) / scale_factor + explore_thresh
-    env.max_level_rew = max(env.max_level_rew, scaled)
-    return env.max_level_rew
+def get_level_reward(env):
+    level_reward = 0
+    for addr in PARTY_POKEMON_LEVELS:
+        level_reward += env.read_m(addr)
+    return level_reward

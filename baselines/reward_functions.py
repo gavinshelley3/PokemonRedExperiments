@@ -23,7 +23,7 @@ def get_badges(env):
     return bit_count(env.read_m(BADGES))
 
 
-def get_levels_reward(env):
+def get_level_reward(env):
     explore_thresh = 22
     scale_factor = 4
     level_sum = env.get_levels_sum()
@@ -256,7 +256,7 @@ def get_enemy_pokemon_max_hp(env, pokemon_index):
 def get_game_state_reward(env, print_stats=False):
     state_scores = {
         "event": env.reward_scale * update_max_event_rew(env),
-        "level": env.reward_scale * get_levels_reward(env),
+        "level": env.reward_scale * get_level_reward(env),
         "heal": env.reward_scale * get_heal_reward(env),
         "op_lvl": env.reward_scale * update_max_op_level(env),
         "dead": env.reward_scale * get_died_reward(env),

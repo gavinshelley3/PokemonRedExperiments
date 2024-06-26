@@ -1,3 +1,4 @@
+import logging
 from constants.event_constants import *
 from constants.map_locations import *
 from constants.map_constants import *
@@ -35,11 +36,17 @@ def update_item_collection_reward(env):
 
     if new_items > 0:
         env.item_collection_reward += new_items * 0.5
+        logging.info(
+            f"New items collected: {new_items}, New item reward: {env.item_collection_reward}"
+        )
 
     if new_unique_items > 0:
         env.item_collection_reward += (
             new_unique_items * 2
         )  # Higher reward for unique items
+        logging.info(
+            f"New unique items collected: {new_unique_items}, New unique item reward: {env.item_collection_reward}"
+        )
 
     env.previous_item_count = current_item_count
     env.previous_unique_items = current_unique_items

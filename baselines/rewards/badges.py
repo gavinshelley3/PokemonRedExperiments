@@ -16,3 +16,8 @@ from rewards.utils import bit_count
 
 def get_badges(env):
     return bit_count(env.read_m(BADGES))
+
+
+def get_badge_reward(env):
+    badges = get_badges(env)
+    return badges * 10

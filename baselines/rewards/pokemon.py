@@ -1,3 +1,4 @@
+import logging
 from constants.event_constants import *
 from constants.map_locations import *
 from constants.map_constants import *
@@ -62,5 +63,6 @@ def get_unique_caught_pokemon(env):
 
 
 def get_pokemon_caught_reward(env):
-    total_caught = get_total_caught_pokemon(env)
-    return total_caught
+    pokemon_caught = get_total_caught_pokemon(env)
+    logging.info(f"Pokémon caught reward: {pokemon_caught}")
+    return pokemon_caught
