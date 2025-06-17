@@ -14,7 +14,6 @@ from constants.event_constants import (
     EVENT_000_FOLLOWED_OAK_INTO_LAB,
     EVENT_9FF,
 )
-from rewards.utils import bit_count
 
 
 def get_all_events_reward(env):
@@ -28,7 +27,9 @@ def get_all_events_reward(env):
         # Read the value at the current address
         value = env.read_m(address)
         # Count the number of bits set in the current value
-        total_bits_set += bit_count(value)
+        bits_set = bin(value).count("1")
+        # Add the number of bits set to the total
+        total_bits_set += bits_set
 
     # Subtract the base event flags and ensure non-negative result
     total_events_completed = max(total_bits_set - base_event_flags, 0)

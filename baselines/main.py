@@ -9,7 +9,6 @@ from stable_baselines3.common.utils import set_random_seed
 from math import floor
 from einops import rearrange
 from rewards.badges import get_badges
-from rewards.utils import read_hp_fraction
 import numpy as np
 from constants.event_constants import *
 from constants.map_locations import *
@@ -34,54 +33,6 @@ HEADLESS = False
 # Placeholder for the model and step count
 current_model = None
 current_step = 0
-
-
-def group_rewards(env):
-    prog = env.progress_reward
-    return (
-        prog["level"] * 100 / env.reward_scale,
-        read_hp_fraction(env) * 2000,
-        prog["explore"] * 150 / (env.explore_weight * env.reward_scale),
-    )
-
-
-def create_exploration_memory(env):
-    w = env.output_shape[1]
-    h = env.memory_height
-
-    def make_reward_channel(r_val):
-        col_steps = env.col_steps
-        max_r_val = (w - 1) * h * col_steps
-        r_val = min(r_val, max_r_val)
-        row = floor(r_val / (h * col_steps))
-        memory = np.zeros(shape=(h, w), dtype=np.uint8)
-        memory[:, :row] = 255
-        row_covered = row * h * col_steps
-        col = floor((r_val - row_covered) / col_steps)
-        memory[:col, row] = 255
-        col_covered = col * col_steps
-        last_pixel = floor(r_val - row_covered - col_covered)
-        memory[col, row] = last_pixel * (255 // col_steps)
-        return memory
-
-    level, hp, explore = group_rewards(env)
-    full_memory = np.stack(
-        (
-            make_reward_channel(level),
-            make_reward_channel(hp),
-            make_reward_channel(explore),
-        ),
-        axis=-1,
-    )
-
-    if get_badges(env) > 0:
-        full_memory[:, -1, :] = 255
-
-    return full_memory
-
-
-def create_recent_memory(env):
-    return rearrange(env.recent_memory, "(w h) c -> h w c", h=env.memory_height)
 
 
 def make_env(rank, env_conf, seed=0):
@@ -186,7 +137,8 @@ def run_experiment(update_interval, env_config):
             with writer.as_default():
                 tf.summary.scalar("reward", rewards, step=step)
                 for key, value in info.items():
-                    tf.summary.scalar(key, value, step=step)
+                    if isinstance(value, (int, float)):  # Only log scalar values
+                        tf.summary.scalar(key, value, step=step)
 
             obs_buffer.append(obs)
             action_buffer.append(action)
@@ -254,23 +206,6 @@ def print_rewards(rewards):
     sys.stdout.flush()
 
 
-def find_best_update_interval(env_config):
-    intervals = [131072, 65536, 32768, 16384, 8192, 4096, 2048, 1024, 512]
-    results = {}
-
-    for interval in intervals:
-        logging.info(f"Running experiment with update interval: {interval}")
-        total_rewards = run_experiment(interval, env_config)
-        results[interval] = total_rewards
-        logging.info(f"Total rewards for update interval {interval}: {total_rewards}")
-
-    best_interval = max(results, key=results.get)
-    logging.info(
-        f"Best update interval: {best_interval} with total rewards: {results[best_interval]}"
-    )
-    return best_interval
-
-
 if __name__ == "__main__":
     env_config = {
         "headless": HEADLESS,
@@ -289,5 +224,7 @@ if __name__ == "__main__":
         "extra_buttons": True,
     }
 
-    best_update_interval = find_best_update_interval(env_config)
-    print(f"The best update interval is {best_update_interval}")
+    interval = 512
+    logging.info(f"Running experiment with {interval} steps.")
+    total_rewards = run_experiment(interval, env_config)
+    logging.info(f"Total rewards: {total_rewards}")

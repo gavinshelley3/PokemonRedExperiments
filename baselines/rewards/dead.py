@@ -10,7 +10,6 @@ from constants.player_constants import *
 from constants.item_constants import *
 from constants.opponent_trainer_constants import *
 from constants.type_effectiveness_matrix import *
-from rewards.utils import read_hp_fraction
 
 
 def get_dead_reward(env):

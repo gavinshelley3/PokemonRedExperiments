@@ -1,6 +1,15 @@
 # event_constants.py
 
-BADGES = 0xD356
+BADGES = [
+    (0xD356, 0),  # BADGE_1
+    (0xD356, 1),  # BADGE_2
+    (0xD356, 2),  # BADGE_3
+    (0xD356, 3),  # BADGE_4
+    (0xD356, 4),  # BADGE_5
+    (0xD356, 5),  # BADGE_6
+    (0xD356, 6),  # BADGE_7
+    (0xD356, 7),  # BADGE_8
+]
 BADGE_1 = (0xD356, 0)
 BADGE_2 = (0xD356, 1)
 BADGE_3 = (0xD356, 2)

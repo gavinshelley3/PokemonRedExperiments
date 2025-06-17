@@ -32,7 +32,7 @@ def get_enemy_pokemon_level(env, pokemon_index):
 
 
 def initialize_enemy_hp(env):
-    env.enemy_hp = [env.read_hp(addr) for addr in ENEMY_PARTY_POKEMON_HP]
+    env.enemy_hp = [env.read_hp(env, addr) for addr in ENEMY_PARTY_POKEMON_HP]
 
 
 def get_enemy_pokemon_defeated_reward(env):

@@ -32,7 +32,6 @@ from rewards.moves import (
 )
 from rewards.events import get_all_events_reward
 from rewards.badges import get_badges
-from rewards.utils import read_hp_fraction, save_screenshot
 
 
 def get_game_state_reward(env):
@@ -57,10 +56,13 @@ def get_game_state_reward(env):
 
 def group_rewards(env):
     prog = env.progress_reward
+    # Default values for missing keys
+    level = prog.get("level", 0)
+    explore = prog.get("explore", 0)
     return (
-        prog["level"] * 100 / env.reward_scale,
-        read_hp_fraction(env) * 2000,
-        prog["explore"] * 150 / (env.explore_weight * env.reward_scale),
+        level * 100 / env.reward_scale,
+        env.read_hp_fraction() * 100 / env.reward_scale,
+        explore * 150 / (env.explore_weight * env.reward_scale),
     )
 
 
@@ -71,8 +73,8 @@ def update_reward(env):
     new_total = sum(val for val in env.progress_reward.values())
     new_step = new_total - env.total_reward
 
-    if new_step < 0 and read_hp_fraction(env) > 0:
-        save_screenshot(env, "neg_reward")
+    if new_step < 0 and env.read_hp_fraction() > 0:
+        env.save_screenshot("negative_reward")
 
     env.total_reward = new_total
     return (
@@ -95,42 +97,3 @@ def update_max_event_rew(env):
     cur_rew = get_all_events_reward(env)
     env.max_event_rew = max(cur_rew, env.max_event_rew)
     return env.max_event_rew
-
-
-def create_exploration_memory(env):
-    w = env.output_shape[1]
-    h = env.memory_height
-
-    def make_reward_channel(r_val):
-        col_steps = env.col_steps
-        max_r_val = (w - 1) * h * col_steps
-        r_val = min(r_val, max_r_val)
-        row = floor(r_val / (h * col_steps))
-        memory = np.zeros(shape=(h, w), dtype=np.uint8)
-        memory[:, :row] = 255
-        row_covered = row * h * col_steps
-        col = floor((r_val - row_covered) / col_steps)
-        memory[:col, row] = 255
-        col_covered = col * col_steps
-        last_pixel = floor(r_val - row_covered - col_covered)
-        memory[col, row] = last_pixel * (255 // col_steps)
-        return memory
-
-    level, hp, explore = group_rewards(env)
-    full_memory = np.stack(
-        (
-            make_reward_channel(level),
-            make_reward_channel(hp),
-            make_reward_channel(explore),
-        ),
-        axis=-1,
-    )
-
-    if get_badges(env) > 0:
-        full_memory[:, -1, :] = 255
-
-    return full_memory
-
-
-def create_recent_memory(env):
-    return rearrange(env.recent_memory, "(w h) c -> h w c", h=env.memory_height)

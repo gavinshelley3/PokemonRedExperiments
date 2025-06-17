@@ -10,12 +10,14 @@ from constants.player_constants import *
 from constants.item_constants import *
 from constants.opponent_trainer_constants import *
 from constants.type_effectiveness_matrix import *
-from constants.event_constants import BADGES
-from rewards.utils import bit_count
 
 
 def get_badges(env):
-    return bit_count(env.read_m(BADGES))
+    badges = 0
+    for badge in BADGES:
+        if env.read_bit(badge[0], badge[1]):
+            badges += 1
+    return badges
 
 
 def get_badge_reward(env):
